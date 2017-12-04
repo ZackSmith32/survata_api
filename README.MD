@@ -21,6 +21,24 @@ How to run the server locally:
 2. `pip install -r requirements.txt`
 3. `python run.py`
 4. tested using chrome browser
+5. provided field names mapped to query field names:
+'''
+	Survata Interview ID = survata_interview_id
+    Date (UTC) = date
+    Period = period
+    Length of Interview (seconds) = length_of_interview
+    Country = country
+    State = state
+    Metro Area = metro_area
+    Postal Code = postal_code
+    Region = region
+    Division = division
+    City = city
+    Gender = gender
+    Age = age
+    Operating System = operating_system
+    Web Browser = web_browser
+'''
 
 User attribute query:
 
