@@ -4,30 +4,33 @@ import os
 import csv
 from datetime import datetime
 
-# if the data base has not been created, then populate database
-# with "take_home.csv"
+# Load data into database if it hasn't been created yet
+'''
 if not os.path.exists(os.path.join(basedir, 'app.db')):
-	# try:
+	try:
 		print('populating database...')
 		db.create_all()
 		i = 1
 		with open(os.path.join(basedir, 'take_home.csv')) as f:
 			next(f)
 			csv_file = csv.reader(f, dialect='excel')
-			# del(csv_file[0])
 			for line in csv_file:
-				if i == 5:
-					break
-				# print(i, line)
+				# if i == 10:
+				# 	break
+				print(i)
 				temp = models.Respondent()
 				temp.Survata_Interview_ID = line[1]
+				# temp.Date = datetime.strptime(line[2], '%Y-%m-%d %H:%M:%S.%f')
 				temp.Date = line[2]
-				temp.Period = line[3]
-				temp.Length_of_Interview = [4]
+				temp.Period = int(line[3])
+				temp.Length_of_Interview = int(line[4])
 				temp.Country = line[5]
 				temp.State = line[6]
 				temp.Metro_Area = line[7]
-				temp.Postal_Code = line[8]
+				if line[8]:
+					temp.Postal_Code = int(line[8])
+				else:
+					temp.Postal_Code = None
 				temp.Region = line[9]
 				temp.Division = line[10]
 				temp.City = line[11]
@@ -37,13 +40,55 @@ if not os.path.exists(os.path.join(basedir, 'app.db')):
 				temp.Web_Browser = line[15]
 				i += 1
 				db.session.add(temp)
+				raw_exp_list = line[16].split('|')
+				for raw_exp in raw_exp_list:
+					exp_list = raw_exp.split(':')[-1].split(',')
+					for exp in exp_list:
+						print(exp)
+						# new_exp = models.Exposure(
+						# 			Survey_ID=exp,
+						# 			Resopndent=temp)
 			db.session.commit()
+			print('out of loop')
 
-
-
-	# except Exception as e:
-	# 	print('ERROR: populating database failed')
-	# 	print(e)
-	# 	exit()
-
+	except Exception as e:
+		print('ERROR: populating database failed')
+		print(e)
+		exit()
+'''
+db.create_all()
+temp = models.Respondent()
+temp.Surveys = [models.Exposure(), models.Exposure()]
 app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
