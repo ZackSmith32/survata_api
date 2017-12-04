@@ -17,7 +17,6 @@ if not os.path.exists(os.path.join(basedir, 'app.db')):
 				temp = models.Respondent()
 				temp.survata_interview_id = line[1]
 				temp.date = line[2]
-				print(int(line[4]))
 				temp.period = int(line[3])
 				temp.length_of_interview = int(line[4])
 				temp.country = line[5]
@@ -40,7 +39,6 @@ if not os.path.exists(os.path.join(basedir, 'app.db')):
 				for raw_exp in raw_exp_list:
 					exp_list = raw_exp.split(':')[-1].split(',')
 					for exp in exp_list:
-						print(exp.strip())
 						new_exp = models.Survey(
 									survey_id=exp.strip(),
 									resp=temp)
