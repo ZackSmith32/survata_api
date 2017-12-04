@@ -1,4 +1,15 @@
 from app import db
+'''
+
+class Exposure(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	Survey_ID = db.Column(db.String, nullable=False)
+	Respondent_ID = db.column(db.Integer, db.ForeignKey('respondent.id'))
+	# Resopndent = db.relationship(Respondent, backref='Surveys', 
+	# 	primaryjoin="Exposure.Respondent_ID == Respondent.id")
+
+	def __repr__():
+		print("<Exposure {}>".format(self.Exposure))
 
 class Respondent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -17,35 +28,44 @@ class Respondent(db.Model):
     Age = db.Column(db.String, nullable=False)
     Operating_System = db.Column(db.String, nullable=False)
     Web_Browser = db.Column(db.String, nullable=False)
-    # Surveys = db.relationship('Exposure', backref='respondent', lazy=True)
+    Surveys = db.relationship('Exposure', backref='resp', lazy='dynamic',
+    	primaryjoin="Respondent.id==Exposure.Respondent_ID")
     # Servey_ID = db.column(db.Integer, db.ForeignKey(Exposure.id))
 
     def __repr__(self):
         return '<Respondent %r>' % (self.Survata_Interview_ID)
 
-class Exposure(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	Survey_ID = db.Column(db.String, nullable=False)
-	Respondent_ID = db.column(db.Integer, db.ForeignKey('Respondent.id'))
-	Resopndent = db.relationship(Respondent, backref='Surveys', 
-		primaryjoin="Exposure.Respondent_ID == Respondent.id")
-
-	def __repr__():
-		print("<Exposure {}>".format(self.Exposure))
 
 '''
 
-class DomainRoot(db.Model):
+class Survey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    survey_id = db.Column(db.String, nullable=False)
+    viewer = db.Column(db.ForeignKey('respondent.id'))
 
-class DomainPath(db.Model):
+    def __repr__(self):
+    	return self.survey_id
+
+class Respondent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    root_id = db.Column(db.ForeignKey(DomainRoot.id))
-    root = db.relationship(DomainRoot, backref='paths')
-   '''
+    # survey_ids = db.Column(db.ForeignKey(Survey.id))
+    survey = db.relationship(Survey, backref='resp')
 
-
-
+    survata_interview_id = db.Column(db.String(), index=True)
+    date = db.Column(db.String, nullable=False)
+    period = db.Column(db.Integer, nullable=False)
+    length_of_interview = db.Column(db.Integer, nullable=False)
+    country = db.Column(db.String, nullable=False)
+    state = db.Column(db.String, nullable=False)
+    metro_area = db.Column(db.String, nullable=True)
+    postal_code = db.Column(db.Integer, nullable=True)
+    region = db.Column(db.String, nullable=False)
+    division = db.Column(db.String, nullable=False)
+    city = db.Column(db.String, nullable=True)
+    gender = db.Column(db.String, nullable=False)
+    age = db.Column(db.String, nullable=False)
+    operating_system = db.Column(db.String, nullable=False)
+    web_browser = db.Column(db.String, nullable=False)
 
 
 

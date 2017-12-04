@@ -5,7 +5,6 @@ import csv
 from datetime import datetime
 
 # Load data into database if it hasn't been created yet
-'''
 if not os.path.exists(os.path.join(basedir, 'app.db')):
 	try:
 		print('populating database...')
@@ -15,39 +14,40 @@ if not os.path.exists(os.path.join(basedir, 'app.db')):
 			next(f)
 			csv_file = csv.reader(f, dialect='excel')
 			for line in csv_file:
-				# if i == 10:
-				# 	break
 				print(i)
 				temp = models.Respondent()
-				temp.Survata_Interview_ID = line[1]
+				temp.survata_interview_id = line[1]
 				# temp.Date = datetime.strptime(line[2], '%Y-%m-%d %H:%M:%S.%f')
-				temp.Date = line[2]
-				temp.Period = int(line[3])
-				temp.Length_of_Interview = int(line[4])
-				temp.Country = line[5]
-				temp.State = line[6]
-				temp.Metro_Area = line[7]
+				temp.date = line[2]
+				print(int(line[4]))
+				temp.period = int(line[3])
+				temp.length_of_interview = int(line[4])
+				temp.country = line[5]
+				temp.state = line[6]
+				temp.metro_area = line[7]
 				if line[8]:
-					temp.Postal_Code = int(line[8])
+					temp.postal_code = int(line[8])
 				else:
-					temp.Postal_Code = None
-				temp.Region = line[9]
-				temp.Division = line[10]
-				temp.City = line[11]
-				temp.Gender = line[12]
-				temp.Age = line[13]
-				temp.Operating_System = line[14]
-				temp.Web_Browser = line[15]
+					temp.postal_code = None
+				temp.region = line[9]
+				temp.division = line[10]
+				temp.city = line[11]
+				temp.gender = line[12]
+				temp.age = line[13]
+				temp.operating_system = line[14]
+				temp.web_browser = line[15]
 				i += 1
 				db.session.add(temp)
 				raw_exp_list = line[16].split('|')
 				for raw_exp in raw_exp_list:
 					exp_list = raw_exp.split(':')[-1].split(',')
 					for exp in exp_list:
-						print(exp)
-						# new_exp = models.Exposure(
-						# 			Survey_ID=exp,
-						# 			Resopndent=temp)
+						print(exp.strip())
+						new_exp = models.Survey(
+									survey_id=exp.strip(),
+									resp=temp)
+						db.session.add(new_exp)
+
 			db.session.commit()
 			print('out of loop')
 
@@ -55,10 +55,30 @@ if not os.path.exists(os.path.join(basedir, 'app.db')):
 		print('ERROR: populating database failed')
 		print(e)
 		exit()
+
 '''
 db.create_all()
-temp = models.Respondent()
-temp.Surveys = [models.Exposure(), models.Exposure()]
+rez = models.Respondent(name='Z')
+rez2 = models.Respondent(name='Smith')
+
+surv = models.Survey(survey_id='abcdefg', resp=rez)
+surv2 = models.Survey(survey_id='butt', resp=rez)
+surv3 = models.Survey(survey_id='yoyoyo', resp=rez2)
+rez2.resp = surv2
+
+db.session.add(rez)
+db.session.add(rez2)
+db.session.add(surv3)
+
+db.session.commit()
+lst = models.Respondent.query.all()
+i = 0
+for item in lst:
+	print(item.name, item.survey)
+	i += 1
+'''
+
+
 app.run(debug=True)
 
 
