@@ -9,6 +9,11 @@ def strip_split(s):
 def index():
 	return "USAGE: /query/?ID:[id-number-here]&column=[column_name]"
 
+
+# This route handles two types of queries, value retrieval for a 
+# particular user id and column name, and count of exposures
+# to a provided survey id
+
 @app.route('/query/', methods=['GET'])
 def id_query():
 
